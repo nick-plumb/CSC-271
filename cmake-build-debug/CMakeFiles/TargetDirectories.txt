@@ -1,0 +1,4 @@
+C:/Users/nhplu/CLionProjects/CSC271/cmake-build-debug/CMakeFiles/glad.dir
+C:/Users/nhplu/CLionProjects/CSC271/cmake-build-debug/CMakeFiles/CSC271.dir
+C:/Users/nhplu/CLionProjects/CSC271/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/nhplu/CLionProjects/CSC271/cmake-build-debug/CMakeFiles/rebuild_cache.dir
