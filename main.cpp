@@ -40,10 +40,18 @@ int main() {
     ShaderProgram shaderProgram(vertPath, fragPath);
     shaderProgram.use();
 
+    ShaderProgram t2(vertPath, fragPath);
+    t2.use();
+
     float vertices[] = {
         0.5f,  0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f
+    };
+    float v2[] ={
+    0.3f,  0.0f, 0.0f,
+    -0.3f, -0.3f, 0.0f,
+    -0.3f,  0.3f, 0.0f
     };
 
     unsigned int indices[] = {
