@@ -1,4 +1,6 @@
+#include <cmath>
 #include <iostream>
+#include <math.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -41,15 +43,22 @@ int main() {
     shaderProgram.use();
 
     float vertices[] = {
-        0.5f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f
+        0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f
     };
 
     unsigned int indices[] = {
         0, 1, 2,
         0, 3, 2,
     };
+
+    // float timeValue = glfwGetTime();
+    // float greenValue = (sin(timeValue / 2.0f)) + 0.5f;
+    int vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor");
+    // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
     // vertex buffer object -> reserves a space in gpu memory
     //vertex array buffer object
     unsigned int VBO, VAO, EBO;
@@ -61,7 +70,14 @@ int main() {
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    GLint posAttrib = glGetAttribLocation(shaderProgram.getID(), "aPos");
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(posAttrib);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram.getID(), "aColor");
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(colAttrib);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -85,9 +101,13 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // float timeValue = glfwGetTime();
+        // float greenValue = (sin(timeValue / 2.0f)) + 0.5f;
+        // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
         glfwSwapBuffers(window);
