@@ -39,20 +39,29 @@ int main() {
     }
     std::string vertPath = std::string(SHADER_DIR) + "/vertex.vert";
     std::string fragPath = std::string(SHADER_DIR) + "/fragment.frag";
+    std::string vertPath2 = std::string(SHADER_DIR) + "/vertex2.vert";
+    std::string fragPath2 = std::string(SHADER_DIR) + "/fragment2.frag";
     ShaderProgram shaderProgram(vertPath, fragPath);
+    ShaderProgram shaderProgram2(vertPath2, fragPath2);
     shaderProgram.use();
+    shaderProgram2.use();
 
-    float vertices[] = {
-        0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f
+    float v1[] = {
+        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.1f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+        0.1f, 0.1f, 0.0f, 1.0f, 0.0f, 0.0f,
+        };
+    float v2[] = {
+        -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
+         0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -1.0f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
     };
 
-    unsigned int indices[] = {
-        0, 1, 2,
-        0, 3, 2,
-    };
+    // unsigned int indices[] = {
+    //     0, 1, 2,
+    //
+    //     3, 4, 5
+    // };
 
     // float timeValue = glfwGetTime();
     // float greenValue = (sin(timeValue / 2.0f)) + 0.5f;
@@ -61,26 +70,39 @@ int main() {
 
     // vertex buffer object -> reserves a space in gpu memory
     //vertex array buffer object
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, VAO, VBO2, VAO2;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
+    // Triangle 1
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),vertices, GL_STATIC_DRAW);
-
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v1),v1, GL_STATIC_DRAW);
     GLint posAttrib = glGetAttribLocation(shaderProgram.getID(), "aPos");
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(posAttrib);
 
     GLint colAttrib = glGetAttribLocation(shaderProgram.getID(), "aColor");
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(colAttrib);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // Triangle 2
+    glGenVertexArrays(1, &VAO2);
+    glGenBuffers(1, &VBO2);
+    glBindVertexArray(VAO2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v2),v2, GL_STATIC_DRAW);
+
+    GLint posAttrib2 = glGetAttribLocation(shaderProgram2.getID(), "bPos");
+    glVertexAttribPointer(posAttrib2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(posAttrib2);
+
+    GLint colAttrib2 = glGetAttribLocation(shaderProgram2.getID(), "bColor");
+    glVertexAttribPointer(colAttrib2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(colAttrib2);
+
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
@@ -106,8 +128,10 @@ int main() {
         // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
         glBindVertexArray(VAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(VAO2);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
         glfwSwapBuffers(window);
@@ -116,7 +140,9 @@ int main() {
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO2);
+    glDeleteBuffers(1, &VBO2);
+    // glDeleteBuffers(1, &EBO);
 
     shaderProgram.destroy();
     glfwTerminate();
