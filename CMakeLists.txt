@@ -20,9 +20,11 @@ add_library(glad ${CMAKE_SOURCE_DIR}/glad/src/glad.c)
 # Define the executable target that is built from main.cpp
 add_executable(CSC271 main.cpp
         include/shaderprogram.h
-        src/shaderprogram.cpp)
+        src/shaderprogram.cpp
+        src/stb_image.cpp)
 
-add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/shaders")
+add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/shaders/")
+add_compile_definitions(ASSET_DIR="${CMAKE_SOURCE_DIR}/assets/")
 
 target_link_libraries(CSC271
         glad
