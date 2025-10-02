@@ -106,6 +106,14 @@ build CMakeFiles/CSC271.dir/src/stb_image.cpp.obj: CXX_COMPILER__CSC271_unscanne
   OBJECT_DIR = CMakeFiles\CSC271.dir
   OBJECT_FILE_DIR = CMakeFiles\CSC271.dir\src
 
+build CMakeFiles/CSC271.dir/src/mesh.cpp.obj: CXX_COMPILER__CSC271_unscanned_Debug C$:/Users/nhplu/CLionProjects/CSC271/src/mesh.cpp || cmake_object_order_depends_target_CSC271
+  DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
+  DEP_FILE = CMakeFiles\CSC271.dir\src\mesh.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/src
+  OBJECT_DIR = CMakeFiles\CSC271.dir
+  OBJECT_FILE_DIR = CMakeFiles\CSC271.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target CSC271
@@ -114,7 +122,7 @@ build CMakeFiles/CSC271.dir/src/stb_image.cpp.obj: CXX_COMPILER__CSC271_unscanne
 #############################################
 # Link the executable CSC271.exe
 
-build CSC271.exe: CXX_EXECUTABLE_LINKER__CSC271_Debug CMakeFiles/CSC271.dir/main.cpp.obj CMakeFiles/CSC271.dir/src/shaderprogram.cpp.obj CMakeFiles/CSC271.dir/src/stb_image.cpp.obj | libglad.a || libglad.a
+build CSC271.exe: CXX_EXECUTABLE_LINKER__CSC271_Debug CMakeFiles/CSC271.dir/main.cpp.obj CMakeFiles/CSC271.dir/src/shaderprogram.cpp.obj CMakeFiles/CSC271.dir/src/stb_image.cpp.obj CMakeFiles/CSC271.dir/src/mesh.cpp.obj | libglad.a || libglad.a
   FLAGS = -g
   LINK_LIBRARIES = libglad.a  -lglfw3  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/lib-mingw-w64

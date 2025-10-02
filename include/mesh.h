@@ -8,7 +8,7 @@
 #include<vector>
 #include<string>
 #include"glad/glad.h"
-#include"csrddef"
+// #include"csrddef"
 
 struct VertexAttribute {
     GLuint pos;
@@ -22,7 +22,7 @@ struct VertexAttribute {
 struct TextureSpec {
     std::string name;
     unsigned int TextureObj;
-    GLuint shaderProgramID();
+    GLuint shaderProgramID;
     GLint layout;
     std::string path;
     bool flipVertical = false;
