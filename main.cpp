@@ -46,10 +46,10 @@ int main() {
     shaderProgram.use();
 
     const std::vector<float> vertices = {
-        0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+        0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 2.0f, 2.0f,
+        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 2.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f, 0.0f,
+        -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f
     };
 
     const std::vector<unsigned int> indices = {
@@ -75,13 +75,30 @@ int main() {
     };
 
     Mesh quad(vertices, indices, attributes, textures);
-
+    float mixValue = 0.2f;
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(window, true);
         }
+        if(glfwGetKey(window, GLFW_KEY_UP ) == GLFW_PRESS) {
+            mixValue += 0.01f;
+            if(mixValue > 1.0f) {
+                mixValue = 1.0f;
+            }
+
+        }
+        if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            mixValue -= 0.01f;
+            if(mixValue < 0.0f) {
+                mixValue = 0.0f;
+            }
+        }
+        glfwSwapInterval(1); //vsync
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        shaderProgram.use();
+        glUniform1f(glGetUniformLocation(prog, "mixValue"), mixValue);
         quad.Draw();
 
         glfwSwapBuffers(window);
