@@ -8,8 +8,10 @@ set(CMAKE_CXX_STANDARD 20)
 # adds GLFW and GLAD directories to the search path
 include_directories(${CMAKE_SOURCE_DIR}/glfw-3.4.bin.WIN64/include
 ${CMAKE_SOURCE_DIR}/glad/include
-${CMAKE_SOURCE_DIR}/include
-${CMAKE_SOURCE_DIR}/src)
+        ${CMAKE_SOURCE_DIR}/include
+        include
+        ${CMAKE_SOURCE_DIR}/glm
+        ${CMAKE_SOURCE_DIR}/src)
 
 # adds the directory containing the compiled GLFW library to the link search path
 link_directories(${CMAKE_SOURCE_DIR}/glfw-3.4.bin.WIN64/lib-mingw-w64)

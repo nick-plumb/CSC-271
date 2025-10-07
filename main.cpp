@@ -5,6 +5,9 @@
 #include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #include "mesh.h"
 #include "shaderprogram.h"
@@ -75,6 +78,12 @@ int main() {
     };
 
     Mesh quad(vertices, indices, attributes, textures);
+
+    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    glm::mat4 translation = glm::mat4(1.0f);
+    translation = glm::translate(translation, glm::vec3(1.0f, 1.0f, 0.0f));
+    vec = translation * vec;
+    std::cout << vec.x << " " << vec.y << " " <<  vec.z << std::endl;
 
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
