@@ -5,9 +5,13 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <fwd.hpp>
 #include<vector>
 #include<string>
 #include"glad/glad.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 // #include"csrddef"
 
 struct VertexAttribute {
@@ -28,16 +32,24 @@ struct TextureSpec {
     bool flipVertical = false;
 };
 
+struct Transformation {
+    std::string name;
+    GLuint shaderProgramID;
+    GLint layout;
+    glm::mat4 m;
+};
+
 class Mesh {
 public:
     Mesh(const std::vector<float>& vertices,
         const std::vector<unsigned int>& indices,
         const std::vector<VertexAttribute>& attributes,
-        const std::vector<TextureSpec>& textures);
+        const std::vector<TextureSpec>& textures,
+        const Transformation& trans);
 
     ~Mesh();
 
-    void Draw() const;
+    void Draw(glm::mat4 trans) const;
 
     void bind() const;
     void unbind() const;
@@ -56,6 +68,7 @@ private:
     GLuint VAO = 0, VBO = 0, EBO = 0;
     GLsizei indexCount = 0;
     std::vector<TextureSpec> textures;
+    Transformation transformation;
 };
 
 #endif //MESH_H

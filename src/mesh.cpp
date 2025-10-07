@@ -67,8 +67,9 @@ void Mesh::loadTexturesFromFile_(const std::vector<TextureSpec> &t) {
     }
 }
 Mesh::Mesh(const std::vector<float> &vertices, const std::vector<unsigned int> &indices,
-            const std::vector<VertexAttribute> &attributes, const std::vector<TextureSpec> &textures) {
-
+            const std::vector<VertexAttribute> &attributes, const std::vector<TextureSpec> &textures,
+            const Transformation &trans) {
+    transformation = trans;
     createBuffers_(vertices, indices, attributes);
     loadTexturesFromFile_(textures);
 }
@@ -77,8 +78,9 @@ Mesh::~Mesh() {
     cleanup();
 }
 
-void Mesh::Draw() const {
+void Mesh::Draw(glm::mat4 trans) const {
     bind();
+    glUniformMatrix4fv(transformation.layout, 1, GL_FALSE, glm::value_ptr(trans));
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
     unbind();
 }

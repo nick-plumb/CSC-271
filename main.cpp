@@ -76,14 +76,21 @@ int main() {
         TextureSpec{"texture1",0, prog, 0, std::string(ASSET_DIR) + "wall.jpg", false },
         TextureSpec{"texture2", 0, prog, 1, std::string(ASSET_DIR) + "awesomeface.png", true}
     };
+    Transformation trans = {"transform", prog, 0, glm::mat4(1.0f)};
+    Mesh quad(vertices, indices, attributes, textures, trans);
 
-    Mesh quad(vertices, indices, attributes, textures);
+    // glm::mat4 transformation = glm::mat4(1.0f);
+    // transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    // transformation = glm::scale(transformation, glm::vec3(0.5f, 0.5f, 0.5f));
 
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 translation = glm::mat4(1.0f);
-    translation = glm::translate(translation, glm::vec3(1.0f, 1.0f, 0.0f));
-    vec = translation * vec;
-    std::cout << vec.x << " " << vec.y << " " <<  vec.z << std::endl;
+    // unsigned int tranformLoc = glGetUniformLocation(shaderProgram.getID(), "transform");
+    // glUniformMatrix4fv(tranformLoc, 1, GL_FALSE, glm::value_ptr(transformation));
+
+    // glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    // glm::mat4 translation = glm::mat4(1.0f);
+    // translation = glm::translate(translation, glm::vec3(1.0f, 1.0f, 0.0f));
+    // vec = translation * vec;
+    // std::cout << vec.x << " " << vec.y << " " <<  vec.z << " " << vec.w << std::endl;
 
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -91,10 +98,15 @@ int main() {
         }
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        quad.Draw();
+
+        glm::mat4 m = glm::mat4(1.0f);
+        m = glm::translate(m, glm::vec3(0.5f, -0.5f, 0.0f));
+        m = glm::rotate(m, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        quad.Draw(m);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+        glfwSwapInterval(1);
     }
     quad.cleanup();
 
