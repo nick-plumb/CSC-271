@@ -106,7 +106,7 @@ int main() {
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-        glfwSwapInterval(1);
+        glfwSwapInterval(1); // vsync
     }
     quad.cleanup();
 

@@ -70,6 +70,8 @@ Mesh::Mesh(const std::vector<float> &vertices, const std::vector<unsigned int> &
             const std::vector<VertexAttribute> &attributes, const std::vector<TextureSpec> &textures,
             const Transformation &trans) {
     transformation = trans;
+    transformation.layout = glGetUniformLocation(transformation.shaderProgramID, transformation.name.c_str());
+    glUniformMatrix4fv(transformation.layout, 1, GL_FALSE, glm::value_ptr(transformation.m));
     createBuffers_(vertices, indices, attributes);
     loadTexturesFromFile_(textures);
 }
