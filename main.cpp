@@ -76,8 +76,10 @@ int main() {
         TextureSpec{"texture1",0, prog, 0, std::string(ASSET_DIR) + "wall.jpg", false },
         TextureSpec{"texture2", 0, prog, 1, std::string(ASSET_DIR) + "awesomeface.png", true}
     };
-    Transformation trans = {"transform", prog, 0, glm::mat4(1.0f)};
-    Mesh quad(vertices, indices, attributes, textures, trans);
+    Transformation M = {"model", prog, 0, glm::mat4(1.0f)};
+    Transformation V = {"view", prog, 0, glm::mat4(1.0f)};
+    Transformation P = {"projection", prog, 0, glm::mat4(1.0f)};
+    Mesh quad(vertices, indices, attributes, textures, M, V, P);
 
     // glm::mat4 transformation = glm::mat4(1.0f);
     // transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -102,7 +104,20 @@ int main() {
         glm::mat4 m = glm::mat4(1.0f);
         m = glm::translate(m, glm::vec3(0.5f, -0.5f, 0.0f));
         m = glm::rotate(m, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        quad.Draw(m);
+        m = glm::scale(m, glm::vec3(1.0f, 1.0f, 1.0f));
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
+
+
+
+
+        quad.Draw(model, view, projection);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

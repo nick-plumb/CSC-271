@@ -45,11 +45,13 @@ public:
         const std::vector<unsigned int>& indices,
         const std::vector<VertexAttribute>& attributes,
         const std::vector<TextureSpec>& textures,
-        const Transformation& trans);
+        const Transformation& M,
+        const Transformation& V,
+        const Transformation& P);
 
     ~Mesh();
 
-    void Draw(glm::mat4 trans) const;
+    void Draw(glm::mat4 m, glm::mat4 v, glm::mat4 p) const;
 
     void bind() const;
     void unbind() const;
@@ -68,7 +70,7 @@ private:
     GLuint VAO = 0, VBO = 0, EBO = 0;
     GLsizei indexCount = 0;
     std::vector<TextureSpec> textures;
-    Transformation transformation;
+    Transformation _M, _V, _P;
 };
 
 #endif //MESH_H
