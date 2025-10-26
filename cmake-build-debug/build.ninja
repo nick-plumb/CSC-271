@@ -53,7 +53,7 @@ build CMakeFiles/glad.dir/glad/src/glad.c.obj: C_COMPILER__glad_unscanned_Debug 
   DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
   DEP_FILE = CMakeFiles\glad.dir\glad\src\glad.c.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src -IC:/Users/nhplu/CLionProjects/CSC271/assimp/include -IC:/Users/nhplu/CLionProjects/CSC271/assimp/build/include
   OBJECT_DIR = CMakeFiles\glad.dir
   OBJECT_FILE_DIR = CMakeFiles\glad.dir\glad\src
 
@@ -86,7 +86,7 @@ build CMakeFiles/CSC271.dir/main.cpp.obj: CXX_COMPILER__CSC271_unscanned_Debug C
   DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
   DEP_FILE = CMakeFiles\CSC271.dir\main.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src -IC:/Users/nhplu/CLionProjects/CSC271/assimp/include -IC:/Users/nhplu/CLionProjects/CSC271/assimp/build/include
   OBJECT_DIR = CMakeFiles\CSC271.dir
   OBJECT_FILE_DIR = CMakeFiles\CSC271.dir
 
@@ -94,7 +94,7 @@ build CMakeFiles/CSC271.dir/src/shaderprogram.cpp.obj: CXX_COMPILER__CSC271_unsc
   DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
   DEP_FILE = CMakeFiles\CSC271.dir\src\shaderprogram.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src -IC:/Users/nhplu/CLionProjects/CSC271/assimp/include -IC:/Users/nhplu/CLionProjects/CSC271/assimp/build/include
   OBJECT_DIR = CMakeFiles\CSC271.dir
   OBJECT_FILE_DIR = CMakeFiles\CSC271.dir\src
 
@@ -102,7 +102,7 @@ build CMakeFiles/CSC271.dir/src/stb_image.cpp.obj: CXX_COMPILER__CSC271_unscanne
   DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
   DEP_FILE = CMakeFiles\CSC271.dir\src\stb_image.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src -IC:/Users/nhplu/CLionProjects/CSC271/assimp/include -IC:/Users/nhplu/CLionProjects/CSC271/assimp/build/include
   OBJECT_DIR = CMakeFiles\CSC271.dir
   OBJECT_FILE_DIR = CMakeFiles\CSC271.dir\src
 
@@ -110,7 +110,7 @@ build CMakeFiles/CSC271.dir/src/mesh.cpp.obj: CXX_COMPILER__CSC271_unscanned_Deb
   DEFINES = -DASSET_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/assets/\" -DSHADER_DIR=\"C:/Users/nhplu/CLionProjects/CSC271/shaders/\"
   DEP_FILE = CMakeFiles\CSC271.dir\src\mesh.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src
+  INCLUDES = -IC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/include -IC:/Users/nhplu/CLionProjects/CSC271/glad/include -IC:/Users/nhplu/CLionProjects/CSC271/include -IC:/Users/nhplu/CLionProjects/CSC271/glm -IC:/Users/nhplu/CLionProjects/CSC271/src -IC:/Users/nhplu/CLionProjects/CSC271/assimp/include -IC:/Users/nhplu/CLionProjects/CSC271/assimp/build/include
   OBJECT_DIR = CMakeFiles\CSC271.dir
   OBJECT_FILE_DIR = CMakeFiles\CSC271.dir\src
 
@@ -124,8 +124,8 @@ build CMakeFiles/CSC271.dir/src/mesh.cpp.obj: CXX_COMPILER__CSC271_unscanned_Deb
 
 build CSC271.exe: CXX_EXECUTABLE_LINKER__CSC271_Debug CMakeFiles/CSC271.dir/main.cpp.obj CMakeFiles/CSC271.dir/src/shaderprogram.cpp.obj CMakeFiles/CSC271.dir/src/stb_image.cpp.obj CMakeFiles/CSC271.dir/src/mesh.cpp.obj | libglad.a || libglad.a
   FLAGS = -g
-  LINK_LIBRARIES = libglad.a  -lglfw3  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  LINK_PATH = -LC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/lib-mingw-w64
+  LINK_LIBRARIES = libglad.a  -lglfw3  -lassimp  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_PATH = -LC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/lib-mingw-w64   -LC:/Users/nhplu/CLionProjects/CSC271/assimp/build/lib
   OBJECT_DIR = CMakeFiles\CSC271.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
