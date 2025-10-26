@@ -54,6 +54,12 @@ int main() {
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
     };
+    const std::vector<float> vertices2 = {
+        1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        1.5f, 1.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        1.5f,  1.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+    };
 
     const std::vector<unsigned int> indices = {
         0, 1, 2,
@@ -80,7 +86,7 @@ int main() {
     Transformation V = {"view", prog, 0, glm::mat4(1.0f)};
     Transformation P = {"projection", prog, 0, glm::mat4(1.0f)};
     Mesh quad(vertices, indices, attributes, textures, M, V, P);
-
+    Mesh q2(vertices2, indices, attributes, textures, M, V, P);
     // glm::mat4 transformation = glm::mat4(1.0f);
     // transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     // transformation = glm::scale(transformation, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -94,17 +100,24 @@ int main() {
     // vec = translation * vec;
     // std::cout << vec.x << " " << vec.y << " " <<  vec.z << " " << vec.w << std::endl;
 
+
     while (!glfwWindowShouldClose(window)) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             glfwSetWindowShouldClose(window, true);
         }
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        //time scaling
+        glm::vec3 tscale = glm::vec3(abs(sin(glfwGetTime())), abs(sin(glfwGetTime())), abs(sin(glfwGetTime())));
+        printf("Scale X: %f\n", tscale.x);
+        //quad 1
 
         glm::mat4 m = glm::mat4(1.0f);
         m = glm::translate(m, glm::vec3(0.5f, -0.5f, 0.0f));
         m = glm::rotate(m, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        m = glm::scale(m, glm::vec3(1.0f, 1.0f, 1.0f));
+        // m = glm::scale(m, glm::vec3(1.0f, 1.0f, 1.0f));
+        m = glm::scale(m, tscale);
+
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -114,10 +127,22 @@ int main() {
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
 
+        // quad 2
+        glm::mat4 m2 = glm::mat4(1.0f);
+        m2 = glm::translate(m2, glm::vec3(1.0f, 1.0f, 1.0f));
+        m2 = glm::scale(m2, tscale);
+        m2 = glm::rotate(m2, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        glm::mat4 view2 = glm::mat4(1.0f);
+        view2 = glm::translate(view2, glm::vec3(0.0f, 0.0f, 0.0f));
+
+        glm::mat4 proj2 = glm::mat4(1.0f);
+        proj2 = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
 
 
 
-        quad.Draw(model, view, projection);
+        quad.Draw(m, view, projection);
+        q2.Draw(m2, view2, proj2);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
