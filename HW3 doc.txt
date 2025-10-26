@@ -1,0 +1,25 @@
+My first step was to figure out how to change the scaling of the object using glfwGetTime. First I got it working, but it only grew instead of growing and shrinking.
+if (tscale.x > 1.0f) {
+            tscale.x = -tscale.x;
+            tscale.y = -tscale.y;
+            tscale.z = -tscale.z;
+        }
+i tried this but it ended up just flipping it which makes sense because the magnitude of the scale would be the same, but i want it to decrement. What ended up working was using a sin function with glfwGetTime as a parameter. This worked nicely. I also printed out the x scaling (since its uniform scaling it doesn't matter which one i print) to get an idea of what was being passed into the scale function.
+
+	glm::vec3 tscale = glm::vec3(sin(glfwGetTime()), sin(glfwGetTime()), sin(glfwGetTime()));
+        printf("Scale X: %f\n", tscale.x);
+...
+	m = glm::scale(m, tscale);
+
+Unfortunately this also makes the scaling go negative which flips the image so i need to make it always return a positive number. It was a simple fix, just putting abs in the front of each sin
+
+	glm::vec3 tscale = glm::vec3(abs(sin(glfwGetTime())), abs(sin(glfwGetTime())), abs(sin(glfwGetTime())));
+
+
+Now that i have the scaling working I need to create another object in the top left corner and apply the scaling to it instead.
+
+My first attempt had interesting results. I ended up making another side to the object we had and it became 3d. I think i need to change the indicies or modify the vertices further
+
+Changing the vertices turned out to not be the solution. what ended up working for me was not trying to use another shader program like what i did in homework1, instead using the same shader program, but drawing a second quad using a different model in it's input, allowing me to simply move the object to the top left corner of the screen. i also used the tscale variable i made earlier to haave it shrink and grow. i figured out that all that needed to do was use the .draw function again, just with different parameters to do what was required and make a second object on screen. 
+
+Earlier i had tried to make another vertex and fragment object, but i found that to be much more complicated than it needed to be and found i could use the same shader program. I also removed the rotation from it so it was more obvious it had changed
