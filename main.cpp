@@ -45,6 +45,7 @@ int main() {
     }
     std::string vertPath = std::string(SHADER_DIR) + "/vertex.vert";
     std::string fragPath = std::string(SHADER_DIR) + "/fragment.frag";
+    //shader1
     ShaderProgram shaderProgram(vertPath, fragPath);
     shaderProgram.use();
 
@@ -54,22 +55,18 @@ int main() {
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
     };
-    const std::vector<float> vertices2 = {
-        1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-        0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-        1.5f, 1.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        1.5f,  1.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-    };
+
 
     const std::vector<unsigned int> indices = {
         0, 1, 2,
         0, 3, 2,
     };
-
+//shader 1
     const GLuint prog = shaderProgram.getID();
     const GLint posLoc = glGetAttribLocation(prog, "aPos");
     const GLint colLoc = glGetAttribLocation(prog, "aColor");
     const GLint uvLoc = glGetAttribLocation(prog, "aTexCoord");
+
 
     const GLsizei stride = 8 * sizeof(float);
     std::vector<VertexAttribute> attributes = {
@@ -86,7 +83,7 @@ int main() {
     Transformation V = {"view", prog, 0, glm::mat4(1.0f)};
     Transformation P = {"projection", prog, 0, glm::mat4(1.0f)};
     Mesh quad(vertices, indices, attributes, textures, M, V, P);
-    Mesh q2(vertices2, indices, attributes, textures, M, V, P);
+
     // glm::mat4 transformation = glm::mat4(1.0f);
     // transformation = glm::rotate(transformation, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
     // transformation = glm::scale(transformation, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -115,11 +112,7 @@ int main() {
         glm::mat4 m = glm::mat4(1.0f);
         m = glm::translate(m, glm::vec3(0.5f, -0.5f, 0.0f));
         m = glm::rotate(m, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        // m = glm::scale(m, glm::vec3(1.0f, 1.0f, 1.0f));
-        m = glm::scale(m, tscale);
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        m = glm::scale(m, glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -129,20 +122,12 @@ int main() {
 
         // quad 2
         glm::mat4 m2 = glm::mat4(1.0f);
-        m2 = glm::translate(m2, glm::vec3(1.0f, 1.0f, 1.0f));
+        m2 = glm::translate(m2, glm::vec3(-0.75f, 0.75f, 0.0f));
         m2 = glm::scale(m2, tscale);
-        m2 = glm::rotate(m2, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-        glm::mat4 view2 = glm::mat4(1.0f);
-        view2 = glm::translate(view2, glm::vec3(0.0f, 0.0f, 0.0f));
-
-        glm::mat4 proj2 = glm::mat4(1.0f);
-        proj2 = glm::perspective(glm::radians(45.0f), 800.0f/600.0f, 0.1f, 100.0f);
-
-
+        // m2 = glm::rotate(m2, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
         quad.Draw(m, view, projection);
-        q2.Draw(m2, view2, proj2);
+        quad.Draw(m2, view, projection);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
