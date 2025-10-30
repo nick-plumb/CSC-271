@@ -1,79 +1,51 @@
-//
-// Created by nhplu on 9/25/2025.
+// Created by dengq on 8/29/25.
 //
 
 #ifndef MESH_H
 #define MESH_H
-
-#include <fwd.hpp>
-#include<vector>
-#include<string>
-#include"glad/glad.h"
-#include <glm.hpp>
+#include <vector>
+#include <string>
+#include <glad/glad.h>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-// #include <assimp/Importer.hpp>
-// #include <assimp/scene.h>
-// #include <assimp/postprocess.h>
-// #include"csrddef"
+#include <cstddef>
+#include <shaderprogram.h>
 
 struct VertexAttribute {
-    GLuint pos;
-    GLuint size;
-    GLenum type;
+    GLuint pos;         // attribute location (index) in the shader
+    GLint size;         // number of components (e.g., 3 for vec3)
+    GLenum type;        // GL_FLOAT, etc.
     GLboolean normalized;
-    GLsizei stride;
-    size_t offset;
-};
-
-struct TextureSpec {
-    std::string name;
-    unsigned int TextureObj;
-    GLuint shaderProgramID;
-    GLint layout;
-    std::string path;
-    bool flipVertical = false;
-};
-
-struct Transformation {
-    std::string name;
-    GLuint shaderProgramID;
-    GLint layout;
-    glm::mat4 m;
+    GLsizei stride;     // byte stride of the vertex
+    size_t offset;      // byte offset to the first component
 };
 
 class Mesh {
 public:
-    Mesh(const std::vector<float>& vertices,
-        const std::vector<unsigned int>& indices,
-        const std::vector<VertexAttribute>& attributes,
-        const std::vector<TextureSpec>& textures,
-        const Transformation& M,
-        const Transformation& V,
-        const Transformation& P);
-
+    Mesh(std::vector<float> v, std::vector<unsigned int> idx, GLuint id);
+    Mesh(const std::string& path, GLuint id);
     ~Mesh();
 
-    void Draw(glm::mat4 m, glm::mat4 v, glm::mat4 p) const;
-
+    // Drawing
+    void draw() const;
+    // Bind/unbind VAO and all registered textures
     void bind() const;
     void unbind() const;
 
+    // Resource cleanup (safe to call multiple times)
     void cleanup();
-
-
+    bool loadOBJ_(const std::string& path);
 private:
-    void createBuffers_(
-    const std::vector<float>& vertices,
-    const std::vector<unsigned int>& indices,
-    const std::vector<VertexAttribute>& attributes);
-
-    void loadTexturesFromFile_(const std::vector <TextureSpec>& textures);
+    // Buffer setup helpers
+    void createBuffers_();
 
     GLuint VAO = 0, VBO = 0, EBO = 0;
     GLsizei indexCount = 0;
-    std::vector<TextureSpec> textures;
-    Transformation _M, _V, _P;
+
+    GLuint shaderProgramID;
+    std::vector<float> vertices = {};
+    std::vector<unsigned int> indices = {};
+
 };
 
-#endif //MESH_H
+#endif

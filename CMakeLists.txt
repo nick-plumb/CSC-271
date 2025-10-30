@@ -12,13 +12,10 @@ ${CMAKE_SOURCE_DIR}/glad/include
         include
         ${CMAKE_SOURCE_DIR}/glm
         ${CMAKE_SOURCE_DIR}/src
-        ${CMAKE_SOURCE_DIR}/assimp/include
-        ${CMAKE_SOURCE_DIR}/assimp/build/include
 )
 
 # adds the directory containing the compiled GLFW library to the link search path
-link_directories(${CMAKE_SOURCE_DIR}/glfw-3.4.bin.WIN64/lib-mingw-w64
-${CMAKE_SOURCE_DIR}/assimp/build/lib)
+link_directories(${CMAKE_SOURCE_DIR}/glfw-3.4.bin.WIN64/lib-mingw-w64)
 
 # adds the GLAD source file
 add_library(glad ${CMAKE_SOURCE_DIR}/glad/src/glad.c)
@@ -30,7 +27,10 @@ add_executable(CSC271 main.cpp
         src/stb_image.cpp
         include/mesh.h
         src/mesh.cpp
-        main.cpp)
+        main.cpp
+        src/camera.cpp
+        src/tiny_obj_loader.cpp
+        include/camera.h)
 
 add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/shaders/")
 add_compile_definitions(ASSET_DIR="${CMAKE_SOURCE_DIR}/assets/")
@@ -38,5 +38,4 @@ add_compile_definitions(ASSET_DIR="${CMAKE_SOURCE_DIR}/assets/")
 target_link_libraries(CSC271
         glad
         glfw3
-        assimp
         )
