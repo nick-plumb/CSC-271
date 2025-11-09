@@ -1,7 +1,6 @@
 //
-// Created by nhplu on 10/30/2025.
+// Created by dengq on 10/29/25.
 //
-
 #include "camera.h"
 #include <cmath>
 
@@ -16,7 +15,33 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float yawDeg, float pitchD
 }
 
 glm::mat4 Camera::GetViewMatrix() const {
-    return glm::lookAt(Position, Position + Front, Up);
+    return Camera::myLookAt(Position, Position + Front, Up);
+    // return glm::lookAt(Position, Position + Front, Up);
+}
+
+glm::mat4 Camera::myLookAt(glm::vec3 cPos, glm::vec3 front, glm::vec3 worldUp) const {
+    glm::vec3 forward = glm::normalize(cPos - front);
+    glm::vec3 right = glm::normalize(glm::cross(worldUp, forward));
+    glm::vec3 up = glm::normalize(glm::cross(forward, right));
+
+    glm::mat4 view(1.0f);
+
+    view[0][0] = right.x;
+    view[1][0] = right.y;
+    view[2][0] = right.z;
+
+    view[0][1] = up.x;
+    view[1][1] = up.y;
+    view[2][1] = up.z;
+
+    view[0][2] = forward.x;
+    view[1][2] = forward.y;
+    view[2][2] = forward.z;
+
+    view[3][0] = -glm::dot(right, cPos);
+    view[3][1] = -glm::dot(up, cPos);
+    view[3][2] = -glm::dot(forward, cPos);
+    return view;
 }
 
 glm::mat4 Camera::GetProjection(float aspect, float nearPlane, float farPlane) const {

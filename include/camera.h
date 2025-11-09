@@ -1,12 +1,4 @@
-//
-// Created by nhplu on 10/30/2025.
-//
-
 #ifndef CAMERA_H
-#define CAMERA_H
-
-#endif //CAMERA_H
-
 #define CAMERA_H
 
 #include <glm.hpp>
@@ -42,6 +34,7 @@ public:
     // --- Matrices ---
     glm::mat4 GetViewMatrix() const;
     glm::mat4 GetProjection(float aspect, float nearPlane = 0.1f, float farPlane = 100.0f) const;
+    glm::mat4 myLookAt(glm::vec3 cPos, glm::vec3 front, glm::vec3 worldUp) const;
 
     // key* are true if pressed; deltaTime in seconds.
     void ProcessKeyboard(GLFWwindow *window, float deltaTime);
@@ -53,3 +46,4 @@ public:
 private:
     void updateVectors(); // recompute Front/Right/Up from Yaw/Pitch + WorldUp
 };
+#endif

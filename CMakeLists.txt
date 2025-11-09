@@ -38,4 +38,5 @@ add_compile_definitions(ASSET_DIR="${CMAKE_SOURCE_DIR}/assets/")
 target_link_libraries(CSC271
         glad
         glfw3
+        opengl32
         )

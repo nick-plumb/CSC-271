@@ -29,7 +29,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Hello CG", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_LENGTH, "Hello CG", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
@@ -47,24 +47,33 @@ int main() {
     }
 
     //create a ShaderProgram object shaderProgram
-    std::string vertPath = std::string(SHADER_DIR) + "vertex.vert";
-    std::string fragPath = std::string(SHADER_DIR) + "fragment.frag";
-    ShaderProgram shaderProgram(vertPath, fragPath);
+//    std::string vertPath = std::string(SHADER_DIR) + "vertex.vert";
+//    std::string fragPath = std::string(SHADER_DIR) + "fragment.frag";
+//    ShaderProgram shaderProgram(vertPath, fragPath);
 
-    Mesh box(std::string(ASSET_DIR) + "box.obj", shaderProgram.getID());
+    std::string vertPath = std::string(SHADER_DIR) + "cube_vertex.vert";
+    std::string fragPath = std::string(SHADER_DIR) + "container_fragment.frag";
+    ShaderProgram containerShaderProgram(vertPath, fragPath);
 
-    glm::vec3 cubePositions[] = {
-            glm::vec3( 0.0f,  0.0f,  0.0f),
-            glm::vec3( 2.0f,  5.0f, -15.0f),
-            glm::vec3(-1.5f, -2.2f, -2.5f),
-            glm::vec3(-3.8f, -2.0f, -12.3f),
-            glm::vec3( 2.4f, -0.4f, -3.5f),
-            glm::vec3(-1.7f,  3.0f, -7.5f),
-            glm::vec3( 1.3f, -2.0f, -2.5f),
-            glm::vec3( 1.5f,  2.0f, -2.5f),
-            glm::vec3( 1.5f,  0.2f, -1.5f),
-            glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
+    vertPath = std::string(SHADER_DIR) + "cube_vertex.vert";
+    fragPath = std::string(SHADER_DIR) + "light_fragment.frag";
+    ShaderProgram lightShaderProgram(vertPath, fragPath);
+
+    Mesh container(std::string(ASSET_DIR) + "box.obj", containerShaderProgram.getID());
+    Mesh light(std::string(ASSET_DIR) + "box.obj", lightShaderProgram.getID());
+
+//    glm::vec3 cubePositions[] = {
+//            glm::vec3( 0.0f,  0.0f,  0.0f),
+//            glm::vec3( 2.0f,  5.0f, -15.0f),
+//            glm::vec3(-1.5f, -2.2f, -2.5f),
+//            glm::vec3(-3.8f, -2.0f, -12.3f),
+//            glm::vec3( 2.4f, -0.4f, -3.5f),
+//            glm::vec3(-1.7f,  3.0f, -7.5f),
+//            glm::vec3( 1.3f, -2.0f, -2.5f),
+//            glm::vec3( 1.5f,  2.0f, -2.5f),
+//            glm::vec3( 1.5f,  0.2f, -1.5f),
+//            glm::vec3(-1.3f,  1.0f, -1.5f)
+//    };
 
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
@@ -76,27 +85,46 @@ int main() {
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //enable VAO that stores the specific model's info
-        shaderProgram.use();
-        shaderProgram.bindTexture2D("texture1", std::string(ASSET_DIR) + "wall.jpg", 0, false);
-        shaderProgram.bindTexture2D("texture2", std::string(ASSET_DIR) + "awesomeface.png", 1, true);
+        containerShaderProgram.use();
+        glm::vec3 lightPos(1.5f, 0.0f, 0.0f);
+        glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
+        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
-        for(unsigned int i = 1; i < 11; i++) {
-            glm::mat4 model = glm::mat4(1.0f);
-            model =  glm::translate(model, cubePositions[i-1]);
-            model = glm::rotate(model, (float) glfwGetTime() * glm::radians(20.0f * i),  glm::vec3(1.0f, 0.3f, 0.5f));
-            glm::mat4 view = glm::mat4(1.0f);
-            view = camera.GetViewMatrix();
-            glm::mat4 projection;
-            projection = camera.GetProjection(SCR_WIDTH/SCR_LENGTH);
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+        //Replace this line ^
+        glm::mat4 projection = camera.GetProjection(SCR_WIDTH/SCR_LENGTH);
 
-            shaderProgram.setUniform("model", model);
-            shaderProgram.setUniform("view", view);
-            shaderProgram.setUniform("projection", projection);
+        containerShaderProgram.setUniform("lightPos", lightPos);
+        //containerShaderProgram.setUniform("objectColor", objectColor);
+        containerShaderProgram.setUniform("lightColor", lightColor);
+        containerShaderProgram.setUniform("viewPos", camera.Position);
 
-            box.draw();
-        }
+        containerShaderProgram.setUniform("model", model);
+        containerShaderProgram.setUniform("view", view);
+        containerShaderProgram.setUniform("projection", projection);
 
+        containerShaderProgram.setUniform("material.ambient",glm::vec3(0.1f, 0.05f, 0.031f));
+        containerShaderProgram.setUniform("material.diffuse", glm::vec3(1.0f, 0.5, 0.31f) * glm::vec3(0.5f));
+        containerShaderProgram.setUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+        containerShaderProgram.setUniform("material.shininess", 32.0f);
+
+
+        container.draw();
+
+        lightShaderProgram.use();
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+
+        lightShaderProgram.setUniform("model", model);
+        lightShaderProgram.setUniform("view", view);
+        lightShaderProgram.setUniform("projection", projection);
+
+
+        light.draw();
+
+        glfwSwapInterval(1);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

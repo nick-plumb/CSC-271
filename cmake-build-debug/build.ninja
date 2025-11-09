@@ -140,7 +140,7 @@ build CMakeFiles/CSC271.dir/src/tiny_obj_loader.cpp.obj: CXX_COMPILER__CSC271_un
 
 build CSC271.exe: CXX_EXECUTABLE_LINKER__CSC271_Debug CMakeFiles/CSC271.dir/main.cpp.obj CMakeFiles/CSC271.dir/src/shaderprogram.cpp.obj CMakeFiles/CSC271.dir/src/stb_image.cpp.obj CMakeFiles/CSC271.dir/src/mesh.cpp.obj CMakeFiles/CSC271.dir/src/camera.cpp.obj CMakeFiles/CSC271.dir/src/tiny_obj_loader.cpp.obj | libglad.a || libglad.a
   FLAGS = -g
-  LINK_LIBRARIES = libglad.a  -lglfw3  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = libglad.a  -lglfw3  -lopengl32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/nhplu/CLionProjects/CSC271/glfw-3.4.bin.WIN64/lib-mingw-w64
   OBJECT_DIR = CMakeFiles\CSC271.dir
   POST_BUILD = cd .
