@@ -95,21 +95,26 @@ int main() {
         //Replace this line ^
         glm::mat4 projection = camera.GetProjection(SCR_WIDTH/SCR_LENGTH);
 
-        containerShaderProgram.setUniform("lightPos", lightPos);
+        // containerShaderProgram.setUniform("lightPos", lightPos);
         //containerShaderProgram.setUniform("objectColor", objectColor);
-        containerShaderProgram.setUniform("lightColor", lightColor);
+        // containerShaderProgram.setUniform("lightColor", lightColor);
         containerShaderProgram.setUniform("viewPos", camera.Position);
 
         containerShaderProgram.setUniform("model", model);
         containerShaderProgram.setUniform("view", view);
         containerShaderProgram.setUniform("projection", projection);
 
-        containerShaderProgram.setUniform("material.ambient",glm::vec3(0.1f, 0.05f, 0.031f));
-        containerShaderProgram.setUniform("material.diffuse", glm::vec3(1.0f, 0.5, 0.31f) * glm::vec3(0.5f));
+        // containerShaderProgram.setUniform("material.ambient",glm::vec3(1.0f, 0.5f, 0.31f));
+        // containerShaderProgram.setUniform("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
         containerShaderProgram.setUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
         containerShaderProgram.setUniform("material.shininess", 32.0f);
 
+        containerShaderProgram.setUniform("light.position", lightPos);
+        containerShaderProgram.setUniform("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+        containerShaderProgram.setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+        containerShaderProgram.setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
+        containerShaderProgram.bindTexture2D("material.diffuse", std::string(ASSET_DIR)+"container2.png", 0, false);
         container.draw();
 
         lightShaderProgram.use();
