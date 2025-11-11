@@ -15,10 +15,10 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp, float yawDeg, float pitchD
 }
 
 glm::mat4 Camera::GetViewMatrix() const {
-    return Camera::myLookAt(Position, Position + Front, Up);
-    // return glm::lookAt(Position, Position + Front, Up);
+    // return Camera::myLookAt(Position, Position + Front, Up);
+    return glm::lookAt(Position, Position + Front, Up);
 }
-
+// hw 5
 glm::mat4 Camera::myLookAt(glm::vec3 cPos, glm::vec3 front, glm::vec3 worldUp) const {
     glm::vec3 forward = glm::normalize(cPos - front);
     glm::vec3 right = glm::normalize(glm::cross(worldUp, forward));
@@ -47,7 +47,7 @@ glm::mat4 Camera::myLookAt(glm::vec3 cPos, glm::vec3 front, glm::vec3 worldUp) c
 glm::mat4 Camera::GetProjection(float aspect, float nearPlane, float farPlane) const {
     return glm::perspective(glm::radians(Zoom), aspect, nearPlane, farPlane);
 }
-
+// end hw 5
 void Camera::ProcessKeyboard(GLFWwindow *window, float deltaTime) {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
