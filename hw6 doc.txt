@@ -1,0 +1,11 @@
+to do this assignment, i first had to get everything back to the version where we had just the orange cube and the light, since that version made the most sense to me and was easiest to modifiy.this consisted of changing the container fragment shader back to using material and lightColor as inputs in its operations. this allowed me to input materials much easier.
+
+then i tried to make a list of vec3 that contained the rgb values of diffuse, specular, ambient and shininess so that i could iterate through it when generating the cubes. i found this approach was not going to work unless i could make material stucts contating the data i wanted per each material within main.cpp i decided it would be best if i made the Material struct within main.cpp so i could do this. i then made a struct containing each of the 16 material propertires. 
+
+since i now had a material struct of each material i wanted, i went into the loop we made to create 10 boxes, changed cubePositions so it made them in the desired locations, and changed it to make only 8 cubes. inside the loop, i used setUniform to change each diffuse, amabient, specular, and shininess by using the list of material structs i had made. this solution worked very nicely and allowed me to make each new material and block in the same loop. 
+
+I read online that the shininess needed to be multiplied by 128 to be the intended value, so my loop does that as well. i made two lists of structs so that i could switch between the given materials and the ones i chose myself easily. 
+
+my light source i made it be roughly in the middle of all the boxes, and 8 units away from them. the lighting is unfortunately the more primitive version we did in class, since i could not figure out how to get it to work with point light and dirlight. 
+
+I also used a table i found online since it was easier to read the numbers, so some of the values are rounded differently from what i could tell, but are still more or less the same. 
