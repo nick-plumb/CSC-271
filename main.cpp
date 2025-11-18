@@ -105,7 +105,7 @@ int main() {
         containerShaderProgram.setUniform("projection", projection);
 
         // containerShaderProgram.setUniform("material.ambient",glm::vec3(1.0f, 0.5f, 0.31f));
-        // containerShaderProgram.setUniform("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
+        containerShaderProgram.setUniform("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
         containerShaderProgram.setUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
         containerShaderProgram.setUniform("material.shininess", 32.0f);
 
@@ -118,10 +118,10 @@ int main() {
         containerShaderProgram.setUniform("pointLight.linear", 0.09f);
         containerShaderProgram.setUniform("pointLight.quadratic", 0.032f);
 
-        // containerShaderProgram.setUniform("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-        // containerShaderProgram.setUniform("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
-        // containerShaderProgram.setUniform("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-        // containerShaderProgram.setUniform("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+        containerShaderProgram.setUniform("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+        containerShaderProgram.setUniform("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+        containerShaderProgram.setUniform("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+        containerShaderProgram.setUniform("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
         containerShaderProgram.bindTexture2D("material.diffuse", std::string(ASSET_DIR)+"container2.png", 0, false);
         containerShaderProgram.bindTexture2D("material.specular", std::string(ASSET_DIR)+"container2_specular.png", 1, false);
