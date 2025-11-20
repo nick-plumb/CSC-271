@@ -30,7 +30,8 @@ add_executable(CSC271 main.cpp
         main.cpp
         src/camera.cpp
         src/tiny_obj_loader.cpp
-        include/camera.h)
+        include/camera.h
+        include/light_config.h)
 
 add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/shaders/")
 add_compile_definitions(ASSET_DIR="${CMAKE_SOURCE_DIR}/assets/")

@@ -60,6 +60,13 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 
+float near = 0.1;
+float far = 100.0;
+float LinearizeDepth(float depth){
+    float z = depth * 2.0 - 1.0;
+    return (2.0 * near * far)/ (far + near - z * (far - near));
+}
+
 
 void main()
 {
@@ -73,9 +80,12 @@ void main()
     result += CalcPointLight(pointLight, norm, FragPos, viewDir);
     //spot light
     // BEFORE WE CAN USE THIS, UPDATE THE UNIFORMS IN MAIN
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+//    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
     //final color
-    FragColor = vec4(result, 1.0);
+
+    FragColor = vec4(result, 1.0f);
+//    float depth = LinearizeDepth(gl_FragCoord.z)/far;
+//    FragColor = vec4(vec3(depth), 1.0f);
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {

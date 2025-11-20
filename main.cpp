@@ -83,7 +83,9 @@ int main() {
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable((GL_STENCIL_TEST));
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         containerShaderProgram.use();
         glm::vec3 lightPos(1.5f, 0.0f, 0.0f);
@@ -94,6 +96,10 @@ int main() {
         glm::mat4 view = camera.GetViewMatrix();
         //Replace this line ^
         glm::mat4 projection = camera.GetProjection(SCR_WIDTH/SCR_LENGTH);
+
+
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
 
         // containerShaderProgram.setUniform("lightPos", lightPos);
         //containerShaderProgram.setUniform("objectColor", objectColor);
@@ -134,7 +140,25 @@ int main() {
             containerShaderProgram.setUniform("model", model);
             container.draw();
         }
-
+        glDisable(GL_DEPTH_TEST);
+        glStencilMask(0x00);
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        lightShaderProgram.use();
+        lightShaderProgram.setUniform("view", view);
+        lightShaderProgram.setUniform("projection", projection);
+        float scale = 1.1f;
+        for (unsigned int i = 0; i < 10; i++) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.0f * i;
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            model = glm::scale(model, glm::vec3(scale, scale, scale));
+            lightShaderProgram.setUniform("model", model);
+            container.draw();
+        }
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        glEnable(GL_DEPTH_TEST);
 
         lightShaderProgram.use();
         model = glm::mat4(1.0f);
