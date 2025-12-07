@@ -82,10 +82,17 @@ void main()
     // BEFORE WE CAN USE THIS, UPDATE THE UNIFORMS IN MAIN
 //    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
     //final color
+//    vec3 R = reflect(-viewDir, norm);
+//    vec3 envColor = texture(skybox, R).rgb;
+//    float mask = texture(material.specular, TexCoords).r;
+
+//    vec3 finalColor = mix(result, envColor, mask);
 
     FragColor = vec4(result, 1.0f);
+//    FragColor = vec4(finalColor);
 //    float depth = LinearizeDepth(gl_FragCoord.z)/far;
 //    FragColor = vec4(vec3(depth), 1.0f);
+//    FragColor = vec4(texture(material.diffuse, TexCoords), material.alpha);
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {

@@ -5,6 +5,7 @@
 #include "stb_image.h"
 #include "mesh.h"
 #include "camera.h"
+#include <random>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
@@ -46,6 +47,15 @@ int main() {
         return -1;
     }
 
+    std::vector<std::string>faces{
+        std::string(ASSET_DIR) + "skybox/right.jpg",
+        std::string(ASSET_DIR) + "skybox/left.jpg",
+        std::string(ASSET_DIR) + "skybox/top.jpg",
+        std::string(ASSET_DIR) + "skybox/bottom.jpg",
+        std::string(ASSET_DIR) + "skybox/front.jpg",
+        std::string(ASSET_DIR) + "skybox/back.jpg"
+    };
+
     //create a ShaderProgram object shaderProgram
 //    std::string vertPath = std::string(SHADER_DIR) + "vertex.vert";
 //    std::string fragPath = std::string(SHADER_DIR) + "fragment.frag";
@@ -54,13 +64,21 @@ int main() {
     std::string vertPath = std::string(SHADER_DIR) + "cube_vertex.vert";
     std::string fragPath = std::string(SHADER_DIR) + "container_fragment.frag";
     ShaderProgram containerShaderProgram(vertPath, fragPath);
+    // containerShaderProgram.bindCubeMap("skybox", faces, 0);
 
     vertPath = std::string(SHADER_DIR) + "cube_vertex.vert";
     fragPath = std::string(SHADER_DIR) + "light_fragment.frag";
     ShaderProgram lightShaderProgram(vertPath, fragPath);
 
+    vertPath = std::string(SHADER_DIR) + "skybox_vertex.vert";
+    fragPath = std::string(SHADER_DIR) + "skybox_fragment.frag";
+    ShaderProgram skyboxShaderProgram(vertPath, fragPath);
+    skyboxShaderProgram.bindCubeMap("skybox", faces, 0);
+
     Mesh container(std::string(ASSET_DIR) + "box.obj", containerShaderProgram.getID());
     Mesh light(std::string(ASSET_DIR) + "box.obj", lightShaderProgram.getID());
+    Mesh skybox(std::string(ASSET_DIR) + "skybox.obj", skyboxShaderProgram.getID());
+
 
     glm::vec3 cubePositions[] = {
             glm::vec3( 0.0f,  0.0f,  0.0f),
@@ -74,7 +92,13 @@ int main() {
             glm::vec3( 1.5f,  0.2f, -1.5f),
             glm::vec3(-1.3f,  1.0f, -1.5f)
     };
-
+    std::vector<float> cubeAlpha(10);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(0.3f, 1.0f);
+    for(float &v: cubeAlpha) {
+        v = dist(gen);
+    }
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -84,8 +108,10 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable((GL_STENCIL_TEST));
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        // glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         containerShaderProgram.use();
         glm::vec3 lightPos(1.5f, 0.0f, 0.0f);
@@ -140,12 +166,13 @@ int main() {
             containerShaderProgram.setUniform("model", model);
             container.draw();
         }
-        glDisable(GL_DEPTH_TEST);
-        glStencilMask(0x00);
-        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-        lightShaderProgram.use();
-        lightShaderProgram.setUniform("view", view);
-        lightShaderProgram.setUniform("projection", projection);
+
+        // glStencilMask(0x00);
+        // glDisable(GL_DEPTH_TEST);
+        // glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        // lightShaderProgram.use();
+        // lightShaderProgram.setUniform("view", view);
+        // lightShaderProgram.setUniform("projection", projection);
         float scale = 1.1f;
         for (unsigned int i = 0; i < 10; i++) {
             model = glm::mat4(1.0f);
@@ -156,10 +183,17 @@ int main() {
             lightShaderProgram.setUniform("model", model);
             container.draw();
         }
-        glStencilMask(0xFF);
-        glStencilFunc(GL_ALWAYS, 0, 0xFF);
-        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        skyboxShaderProgram.use();
+        // glStencilMask(0xFF);
+        // glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        // glEnable(GL_DEPTH_TEST);
+        glm::mat4 viewNoTrans = glm::mat4(glm::mat3(view));
+        skyboxShaderProgram.setUniform("view", viewNoTrans);
+        skyboxShaderProgram.setUniform("projection", projection);
+        skybox.draw();
 
+        glDepthFunc(GL_LESS);
         lightShaderProgram.use();
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
