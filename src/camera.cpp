@@ -60,6 +60,11 @@ void Camera::ProcessKeyboard(GLFWwindow *window, float deltaTime) {
         Position -= glm::normalize(glm::cross(Front, Up)) * velocity;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         Position += glm::normalize(glm::cross(Front, Up)) * velocity;
+    //added this to make movement easier - up and down movement without turning camera
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        Position += glm::vec3(0, velocity, 0);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        Position -= glm::vec3(0, velocity, 0);
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch) {

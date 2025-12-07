@@ -70,14 +70,14 @@ int main() {
     fragPath = std::string(SHADER_DIR) + "light_fragment.frag";
     ShaderProgram lightShaderProgram(vertPath, fragPath);
 
-    vertPath = std::string(SHADER_DIR) + "skybox_vertex.vert";
-    fragPath = std::string(SHADER_DIR) + "skybox_fragment.frag";
-    ShaderProgram skyboxShaderProgram(vertPath, fragPath);
-    skyboxShaderProgram.bindCubeMap("skybox", faces, 0);
+    // vertPath = std::string(SHADER_DIR) + "skybox_vertex.vert";
+    // fragPath = std::string(SHADER_DIR) + "skybox_fragment.frag";
+    // ShaderProgram skyboxShaderProgram(vertPath, fragPath);
+    // skyboxShaderProgram.bindCubeMap("skybox", faces, 0);
 
     Mesh container(std::string(ASSET_DIR) + "box.obj", containerShaderProgram.getID());
     Mesh light(std::string(ASSET_DIR) + "box.obj", lightShaderProgram.getID());
-    Mesh skybox(std::string(ASSET_DIR) + "skybox.obj", skyboxShaderProgram.getID());
+    // Mesh skybox(std::string(ASSET_DIR) + "skybox.obj", skyboxShaderProgram.getID());
 
 
     glm::vec3 cubePositions[] = {
@@ -124,6 +124,16 @@ int main() {
         glm::mat4 projection = camera.GetProjection(SCR_WIDTH/SCR_LENGTH);
 
 
+        glm::vec3 pointLightPos[] = {
+        glm::vec3(0.0f, -5.0f, 2.0f),
+        glm::vec3(2.0f, 2.0f, 2.0f),
+        glm::vec3(-1.0f, -1.0f, -10.5f)};
+
+        glm::vec3 pointColor[] = {
+        glm::vec3(1.0f, 0.0f, 0.0f),
+        glm::vec3(0.0f, 1.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 1.0f)};
+
         glStencilMask(0xFF);
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
 
@@ -141,19 +151,23 @@ int main() {
         containerShaderProgram.setUniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
         containerShaderProgram.setUniform("material.shininess", 32.0f);
 
-        containerShaderProgram.setUniform("pointLight.position", lightPos);
-        containerShaderProgram.setUniform("pointLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
-        containerShaderProgram.setUniform("pointLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-        containerShaderProgram.setUniform("pointLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-
-        containerShaderProgram.setUniform("pointLight.constant", 1.0f);
-        containerShaderProgram.setUniform("pointLight.linear", 0.09f);
-        containerShaderProgram.setUniform("pointLight.quadratic", 0.032f);
 
         containerShaderProgram.setUniform("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
         containerShaderProgram.setUniform("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
         containerShaderProgram.setUniform("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
         containerShaderProgram.setUniform("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+        containerShaderProgram.setUniform("spotLight.direction",camera.Front);
+        containerShaderProgram.setUniform("spotLight.position", camera.Position);
+        containerShaderProgram.setUniform("spotLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+        containerShaderProgram.setUniform("spotLight.diffuse", glm::vec3(0.7f, 0.7f, 0.7f));
+        containerShaderProgram.setUniform("spotLight.specular", glm::vec3(2.0f, 2.0f, 2.0f));
+        containerShaderProgram.setUniform("spotLight.constant", 1.0f);
+        containerShaderProgram.setUniform("spotLight.linear", 0.09f);
+        containerShaderProgram.setUniform("spotLight.quadratic", 0.032f);
+        containerShaderProgram.setUniform("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+        containerShaderProgram.setUniform("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+
 
         containerShaderProgram.bindTexture2D("material.diffuse", std::string(ASSET_DIR)+"container2.png", 0, false);
         containerShaderProgram.bindTexture2D("material.specular", std::string(ASSET_DIR)+"container2_specular.png", 1, false);
@@ -184,28 +198,37 @@ int main() {
             container.draw();
         }
         glDepthFunc(GL_LEQUAL);
-        skyboxShaderProgram.use();
+        // skyboxShaderProgram.use();
         // glStencilMask(0xFF);
         // glStencilFunc(GL_ALWAYS, 0, 0xFF);
         // glEnable(GL_DEPTH_TEST);
-        glm::mat4 viewNoTrans = glm::mat4(glm::mat3(view));
-        skyboxShaderProgram.setUniform("view", viewNoTrans);
-        skyboxShaderProgram.setUniform("projection", projection);
-        skybox.draw();
+        // glm::mat4 viewNoTrans = glm::mat4(glm::mat3(view));
+        // skyboxShaderProgram.setUniform("view", viewNoTrans);
+        // skyboxShaderProgram.setUniform("projection", projection);
+        // skybox.draw();
+
 
         glDepthFunc(GL_LESS);
+        for (unsigned int i = 0; i < 3; i++) {
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].position", pointLightPos[i]);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].ambient", pointColor[i]);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].diffuse", pointColor[i]);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].specular", pointColor[i]);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].constant", 1.0f);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].linear", 0.09f);
+            containerShaderProgram.setUniform("pointLights[" + std::to_string(i) + "].quadratic", 0.032f);
+        }
         lightShaderProgram.use();
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f));
-
-        lightShaderProgram.setUniform("model", model);
         lightShaderProgram.setUniform("view", view);
         lightShaderProgram.setUniform("projection", projection);
-
-
-        light.draw();
-
+        for (unsigned int i = 0; i < 3; i++) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, pointLightPos[i]);
+            model = glm::scale(model, glm::vec3(0.2f));
+            lightShaderProgram.setUniform("model", model);
+            lightShaderProgram.setUniform("lightColor", pointColor[i]);
+            light.draw();
+        }
         glfwSwapInterval(1);
         glfwSwapBuffers(window);
         glfwPollEvents();

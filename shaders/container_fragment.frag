@@ -50,7 +50,7 @@ struct SpotLight{
 uniform Material material;
 uniform DirLight dirLight;
 uniform vec3 objectColor;
-uniform PointLight pointLight;
+uniform PointLight pointLights[3];
 uniform SpotLight spotLight;
 //uniform vec3 lightColor;
 //uniform vec3 lightPos;
@@ -77,10 +77,13 @@ void main()
     vec3 result = vec3(0.0);
     result += CalcDirLight(dirLight, norm, viewDir);
     //point light
-    result += CalcPointLight(pointLight, norm, FragPos, viewDir);
+    for(uint i = 0; i < 3; i++){
+    result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+}
+
     //spot light
     // BEFORE WE CAN USE THIS, UPDATE THE UNIFORMS IN MAIN
-//    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
     //final color
 //    vec3 R = reflect(-viewDir, norm);
 //    vec3 envColor = texture(skybox, R).rgb;
@@ -132,7 +135,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
     return ambient + diffuse + specular;
     };
 
-vec3 SpotPointLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
     vec3 lightDir = normalize(light.position - fragPos);
     //diffuse
     float diff = max(dot(normal, lightDir), 0.0);
